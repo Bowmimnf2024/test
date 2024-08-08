@@ -25,5 +25,5 @@ jobs:
           -Dsonar.organization=my-org
           -Dsonar.projectKey=my-Java-web-app
       env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_TOKEN: ${{ sqa_b0fab875f69a6f47dbcea2957fca001957fba600 }}
+        SONAR_HOST_URL: ${{ sqa_b0fab875f69a6f47dbcea2957fca001957fba600 }}
