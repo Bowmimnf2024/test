@@ -63,7 +63,7 @@ jobs:
 
       env:
 
-        SONAR_TOKEN: ${{ secrets.sqa_5cede5d7e1a2f99fdfd3c778dbfb569af699183d}}
+        SONAR_TOKEN: ${{sqa_5cede5d7e1a2f99fdfd3c778dbfb569af699183d}}
 
         SONAR_HOST_URL: 'https://bowmimnf2024.github.io'
 
