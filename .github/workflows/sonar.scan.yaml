@@ -1,44 +1,70 @@
-name: Build
+[Yesterday 17:32] Neela Bowmi
+name: CI/CD workflow for Maven Build and Sonar Code scan
 
 on:
+
   push:
+
     branches:
+
       - main
 
+  workflow_dispatch:
+
 jobs:
+
   build:
-    name: Build and analyze
+
     runs-on: ubuntu-latest
-    
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v1
-        with:
-          java-version: 17
+    - name: Checkout code
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      uses: actions/checkout@v2
+ 
+    - name: Set up JDK 11
 
-      - name: Cache Maven packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+      uses: actions/setup-java@v2
 
-      - name: Navigate to project directory
-        run: cd path/to/your/project
+      with:
 
-      - name: Build and analyze
-        env:
-          SONAR_TOKEN: ${{ secrets.squ_f200c98aff319b0b278f6d49448a9a4984e80a40 }}
-          SONAR_HOST_URL: 'http://localhost:9000'
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=sonar -Dsonar.projectName='sonar'
+        distribution: 'adopt'
+
+        java-version: '11'
+ 
+    - name: Build with Maven
+
+      run: mvn clean install -f MyWebApp/pom.xml
+ 
+    - name: Start SonarQube container
+
+      run: |
+
+        docker run -d --name sonar -p 9000:9000 sonarqube:latest
+
+        # Wait for SonarQube to be fully up and running
+
+        until curl -s http://localhost:9000; do sleep 5; done
+ 
+    - name: SonarQube Scan
+
+      uses: sonarsource/sonarqube-scan-action@master
+
+      with:
+
+        projectBaseDir: .
+
+        args: >
+
+          -Dsonar.organization=my-org
+
+          -Dsonar.projectKey=my-Java-web-app
+
+      env:
+
+        SONAR_TOKEN: ${{ secrets.squ_f200c98aff319b0b278f6d49448a9a4984e80a40 }}
+
+        SONAR_HOST_URL: 'https://bowmi.someli/sonar'
+
+ 
