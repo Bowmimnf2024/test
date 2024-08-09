@@ -1,4 +1,4 @@
-[Yesterday 17:32] Neela Bowmi
+
 name: CI/CD workflow for Maven Build and Sonar Code scan
 
 on:
