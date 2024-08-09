@@ -34,6 +34,9 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Navigate to project directory
+        run: cd path/to/your/project
+
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.squ_f200c98aff319b0b278f6d49448a9a4984e80a40 }}
